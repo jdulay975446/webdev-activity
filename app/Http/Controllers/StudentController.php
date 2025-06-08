@@ -30,7 +30,7 @@ public function createStudent(Request $request){
             'gender',
             'address'
         ]));
-        return redirect()->route('ViewStudents')->with('success', 'Student created successfully.');
+        return redirect()->route('dashboard')->with('success', 'Student created successfully.');
 
     }
 public function updateStudent(Request $request, $id){
@@ -51,12 +51,12 @@ public function updateStudent(Request $request, $id){
     $updateStudent->address = $request->address;
     $updateStudent->save();
 
-    return redirect()->route('ViewStudents')->with('success', 'Student updated successfully.');
+    return redirect()->route('dashboard')->with('success', 'Student updated successfully.');
     }
 
     public function deleteStudent($id){
         $deleteStudent = Student::findOrFail($id);
         $deleteStudent->delete();
-        return redirect()->route('ViewStudents')->with('success', 'Student deleted successfully.');
+        return redirect()->route('dashboard')->with('success', 'Student deleted successfully.');
     }
 }
