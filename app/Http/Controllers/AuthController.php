@@ -17,6 +17,10 @@ class AuthController extends Controller
         }
         return view('auth.login');
     }
+
+     public function showRegisterForm() {
+        return view('auth.register');
+    }
    public function login(Request $request){
     $request->validate([
         'email' => 'required|string|email',
@@ -34,7 +38,24 @@ class AuthController extends Controller
 
     return back()->with('error', 'Invalid credentials');
 }
+public function register(Request $request){
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|unique:users',
+        'password' => 'required|string|min:8',
+    ]);
 
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
+
+    Auth::login($user);
+    Session::put('loginId', $user->id);
+    Session::regenerate();
+    return redirect()->route('dashboard')->with('success', 'Registered successfully');
+}
 public function logout(Request $request)
 {
     Auth::logout();
